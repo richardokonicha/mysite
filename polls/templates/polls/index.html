@@ -1,0 +1,13 @@
+{% if list_of_objects %}
+    {% for question in list_of_objects %}
+        <ul>
+            <li><a href="{{ question.id }}">
+                {{ question.question_text }}
+            </a>
+                
+            </li>
+        </ul>
+    {% endfor %}
+{% else %}
+        <div>There is no list objects</div>
+{% endif %}
