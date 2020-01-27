@@ -15,7 +15,8 @@ def index(request):
 
 
 def detail(request, question_id):
-    return HttpResponse("This is the detail view for the value ==> {}".format(question_id))
+    return HttpResponse("This is the detail view for the value ==> {}"
+                        .format(question_id))
 
 
 def vote(request, question_id):
