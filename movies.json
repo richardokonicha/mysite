@@ -1,0 +1,35 @@
+[
+    {
+      "model": "polls.actor",
+      "pk": 1,
+      "fields": {
+        "name": "Michael B. Jordan"
+      }
+    },
+    {
+      "model": "polls.actor",
+      "pk": 2,
+      "fields": {
+        "name": "Sylvester Stallone"
+      }
+    },
+    {
+      "model": "polls.movie",
+      "pk": 1,
+      "fields": {
+        "title": "Creed",
+        "actors": [1, 2],
+        "year": "2015"
+      }
+    },
+    {
+        "model": "polls.movie",
+        "pk": 4,
+        "fields": {
+            "title": "the man",
+            "actors": [1],
+            "year": "2019",
+            "language": "english"
+        }
+    }
+  ]

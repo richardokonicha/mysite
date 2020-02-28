@@ -10,7 +10,7 @@ class Query(ObjectType):
     # Our resolver methods takes the graphql context (root, info) as well as
     # Argument (name) and returns data for query response
     def resolve_hello(root, info, name):
-        # f-strings a new and improved way to format strings it evaluates at
+        # f-strings a new and improved way to fofrmat strings it evaluates at
         # runtime thus can can call functions and resolve expressions... enjoy
         return f'Hello {name}!'
 
