@@ -3,7 +3,7 @@ from graphene_django.types import DjangoObjectType
 from ingredients.models import Category, Ingredients
 
 
-# STEP1 first make an object type out of our models
+# TODO STEP1 first make an object type (DjangoObjectType) out of our models
 class CategoryType(DjangoObjectType):
     class Meta:
         model = Category
@@ -14,6 +14,8 @@ class IngredientsType(DjangoObjectType):
         model = Ingredients
 
 
+# TODO STEP2 create Query class inherit object
+# create List(Type) or Field(Type,*) types as fields in the Query class.
 class Query(object):
     all_category = graphene.List(CategoryType)
     all_ingredients = graphene.List(IngredientsType)
@@ -30,6 +32,7 @@ class Query(object):
         name=graphene.String()
         )
 
+    # TODO resolve functions 
     def resolve_all_category(self, info, **kwargs):
         return Category.objects.all()
 
@@ -60,3 +63,5 @@ class Query(object):
             return Ingredients.objects.get(name=name)
 
         return None
+
+# TODO then import module to project level schema
