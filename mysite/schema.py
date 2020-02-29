@@ -1,13 +1,9 @@
-import graphene
-from polls import schema
+from graphene import ObjectType, Schema
+from ingredients.schema import Query as Q
 
 
-class Query(schema.Query, graphene.ObjectType):
+class Query(Q, ObjectType):
     pass
 
 
-class Mutation(schema.Mutation, graphene.ObjectType):
-    pass
-
-
-schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = Schema(query=Query)
