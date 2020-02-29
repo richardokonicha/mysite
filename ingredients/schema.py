@@ -60,4 +60,3 @@ class Query(object):
             return Ingredients.objects.get(name=name)
 
         return None
-
