@@ -1,45 +1,150 @@
+import graphene
+from graphene_django.types import DjangoObjectType, ObjectType
+from polls.models import Actor, Movie
 
-from graphene import ObjectType, String, Schema
+
+# Create a Graphql type for the actor model
+class ActorType(DjangoObjectType):
+    class Meta:
+        model = Actor
+
+
+class MovieType(DjangoObjectType):
+    class Meta:
+        model = Movie
 
 
 class Query(ObjectType):
-    # this defines a field `hello` in our Schema with a single Argument `name`
-    hello = String(name=String(default_value="stranger"))
-    goodbye = String()
+    actor = graphene.Field(ActorType, id=graphene.Int())
+    actors = graphene.List(ActorType)
+    movie = graphene.Field(MovieType, id=graphene.Int())
+    movies = graphene.List(MovieType)
 
-    # Our resolver methods takes the graphql context (root, info) as well as
-    # Argument (name) and returns data for query response
-    def resolve_hello(root, info, name):
-        # f-strings a new and improved way to fofrmat strings it evaluates at
-        # runtime thus can can call functions and resolve expressions... enjoy
-        return f'Hello {name}!'
+    def resolve_actor(self, info, **kwargs):
+        id = kwargs.get('id')
 
-    def resolve_goodbye(root, info):
-        return 'See ya'
+        if id is not None:
+            return Actor.object.get(pk=id)
+        return None
+
+    def resolve_movie(self, info, **kwargs):
+        id = kwargs.get('id')
+
+        if id is not None:
+            return Movie.object.get(pk=id)
+
+        return None
+
+    def resolve_actors(self, info, **kwargs):
+        Actor.object.all()
+
+    def resolve_movies(self, info, **kwargs):
+        Movie.object.all()
 
 
-# for each field in our schema we write a resolver to fetch data requested by a
-# client's Query using the context and Args
-schema = Schema(query=Query)
-
-qurry = schema.execute('{goodbye}')
-print(qurry.data)
+class ActorInput(graphene.InputObjectType):
+    id = graphene.ID()
+    name = graphene.String()
 
 
-# In Graphql Schema Defination Language SDL, we can describe the fields
-# defined by class Query above as
+class MovieInput(graphene.InputObjectType):
+    id = graphene.ID()
+    title = graphene.String()
+    actors = graphene.List(ActorInput)
+    year = graphene.Int()
 
-# type Query {
-#   hello(name: String="stranger"): String
-#   goodbye: String
-# }
 
-# write meduim article
-# to test schema from django ORM 
-# open django ORM 'python manage.py shell' import schema
-#from console import schema.schema.execute()
-#pass your query '{hello(name: "Richard Okonicha")}'
-#https://docs.graphene-python.org/en/latest/quickstart/#requirements
-# query = schema.schema.execute('{hello}')  
-# query_with_argument = '{ hello(name: "GraphQL") }'
-# print(result.data['hello'])                                              
+class CreateActor(graphene.Mutation):
+    class Arguments:
+        input = ActorInput(required=True)
+    ok = graphene.Boolean()
+    actor = graphene.Field(ActorType)
+
+    @staticmethod
+    def mutate(root, info, input=None):
+        ok = True
+        actor_instance = Actor(name=input.name)
+        actor_instance.save()
+        return CreateActor(ok=ok, actor=actor_instance)
+
+
+class UpdateActor(graphene.Mutation):
+    class Arguments:
+        input = ActorInput(required=True)
+        id = graphene.Int(required=True)
+    ok = graphene.Boolean()
+    actor = graphene.Field(ActorType)
+
+    @staticmethod
+    def mutate(root, info, id, input=None):
+        ok = False
+        actor_instance = Actor.object.get(pk=id)
+        if actor_instance:
+            ok = True
+            actor_instance = input.name
+            actor_instance.save()
+            return UpdateActor(ok=ok, actor=actor_instance)
+        return UpdateActor(ok=ok, actor=None)
+
+
+class CreateMovie(graphene.Mutation):
+    class Arguments:
+        input = MovieInput(required=True)
+    ok = graphene.Boolean()
+    movie = graphene.Field(MovieType)
+
+    @staticmethod
+    def mutate(root, info, input=None):
+        ok = True
+        actors = []
+        for actor_input in input.actors:
+            actor = Actor.object.get(pk=actor_input.id)
+            if actor is None:
+                return CreateMovie(ok=ok, movie=None)
+            actors.append(actor)
+
+        movie_instance = Movie(
+            title=input.title,
+            year=input.year
+            )
+        movie_instance.save()
+        movie_instance.actors.set(actors)
+        return CreateMovie(ok=ok, movie=movie_instance)
+
+
+class UpdateMovie(graphene.Mutation):
+    class Arguments:
+        input = MovieInput(required=True)
+        id = graphene.Int(required=True)
+    ok = graphene.Boolean()
+    movie = graphene.Field(MovieType)
+
+    @staticmethod
+    def mutate(root, info, id, input=None):
+        ok = False
+        movie_instance = Movie.object.get(pk=id)
+        if movie_instance:
+            ok = True
+            actors = []
+            for actor_input in input.actors:
+                actor = Actor.object.get(pk=actor_input)
+                if actor in None:
+                    return UpdateMovie(ok=ok, movie=None)
+                actors.append(actor)
+            movie_instance.title = input.title
+            movie_instance.year = input.year
+            movie_instance.save()
+            movie_instance.actors.set(actors)
+            return UpdateMovie(ok=ok, movie=movie_instance)
+        return UpdateMovie(ok=ok, movie=None)
+
+
+# create mutation type
+class Mutation(graphene.ObjectType):
+    create_actor = CreateActor.Field()
+    create_movie = CreateMovie.Field()
+    update_actor = UpdateActor.Field()
+    update_movie = UpdateMovie.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
