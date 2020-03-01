@@ -1,9 +1,10 @@
 from graphene import Schema, ObjectType
-from polls.schema import Query as QuestionQuery
-from ingredients.schema import Query as ingredientsQuery
+from polls.schema.schema import Query as QuestionQ
+from ingredients.schema.schema import Query as ingredientsQ
+from ingredients.schema.schemaNode import Query as NodeQ
 
 
-class Query(QuestionQuery, ingredientsQuery, ObjectType):
+class Query(QuestionQ, NodeQ, ObjectType):
     pass
 
 
