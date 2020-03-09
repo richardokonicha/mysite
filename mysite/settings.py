@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
-    'ingredients.apps.IngredientsConfig'
+    'ingredients.apps.IngredientsConfig',
+    'chat.apps.ChatConfig'
 ]
 
 
