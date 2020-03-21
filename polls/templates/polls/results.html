@@ -1,0 +1,13 @@
+<div>
+    <h1>
+        Votes Score board
+    </h1>
+        {% for choice in choices %}  
+        <table >
+            <thead>{{ choice.choice_text }}</thead>
+
+            <tbody>{{ choice.votes }}</tbody>
+        </table>
+        {% endfor %}
+    
+</div>

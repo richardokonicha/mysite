@@ -1,0 +1,170 @@
+/* 
+Colors
+
+Light green #7ed56f
+Meduim green #55c57a
+Dark green #28b485 
+
+*/
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+header {
+    height: 95vh;
+    background-image: 
+    linear-gradient(to right ,rgba(126, 213, 111, 0.8),
+    rgba(40, 180, 131, 0.8)),
+    url(../assets/aisha.jpg);
+    background-position: center;
+    background-size: cover;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    position: relative;
+}
+.header-h {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 0.8;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    backface-visibility: hidden;
+   
+}
+.header-button {
+    text-decoration: none;
+    font-size: 30px;
+    display: inline-block;
+    margin-top: 35px;
+    background-color: hsl(127, 50%, 70%);
+    padding: 20px;
+    border-radius: 100px;
+    box-shadow: 0 3px 3px hsl(1, 50%, 0%);
+    color: ivory;
+   
+}
+.header-button:active {
+    animation-name: Vibrate;
+    animation-timing-function: ease-out;
+    animation-duration: 0.2s;
+
+}
+.header-button:hover {
+    box-shadow: 0 0.3px 3px hsl(1, 50%, 0%);
+
+}
+@keyframes Vibrate {
+    0% {
+        transform: translate(10%, 0%);
+        
+
+
+    }
+    20% {
+        transform: translate(-2%, 0%);
+       
+    }
+    30% {
+        transform: translate(-2%, 0%);
+
+
+    }
+    35% {
+        transform: translate(0%, -2%);
+
+
+    }
+    40% {
+        transform: translate(0, 2%);
+
+
+    }
+
+    45% {
+        transform: translate(-2%, 0%);
+
+
+    }
+
+}
+
+body {
+    background-color: azure;
+    color: beige;
+    padding: 40px;
+    font-size: 25px;
+    font-family: monospace;
+    border: 2px solid hsl(71, 50%, 50%);
+}
+
+.header-icon img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: hsl(70, 50%, 50%);
+    position: absolute;
+    top: 50px;
+    left: 50px;
+}
+.header-text-discover {
+    word-wrap: none;
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 1rem;
+    display: block;
+    height: 6rem;
+    text-transform: uppercase;
+    animation-name: MoveL;
+    animation-duration: 5s;
+    animation-delay: 0.5s;
+    animation-timing-function: ease-out;
+}
+.header-text-beauty {
+    display: block;
+    font-weight: 100;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    word-spacing: 2rem;
+    animation-name: MoveR;
+    animation-duration: 5s;
+    animation-delay: 0.5s;
+    animation-timing-function: ease-out;
+
+}
+
+@keyframes MoveR {
+    0% {
+        opacity: 0;
+        transform: translateX(-70%);
+
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateX(40%);
+
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+@keyframes MoveL {
+    0% {
+        opacity: 0;
+        transform: translateX(70%);
+
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateX(-40%);
+
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0);
+    }
+}

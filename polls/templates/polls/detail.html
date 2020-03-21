@@ -1,10 +1,6 @@
 <h1>{{ question.question_text }}</h1>
 
-    {% for choice in question.choice_set.all %}
-        <ul>
-            {{ choice.choice_text }}
-        </ul>
-    {% endfor %}
+  
 
 {% if error_message %} <p><strong>{{ error_message }}</strong></p>{% endif %}
 

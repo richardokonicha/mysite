@@ -12,3 +12,6 @@ def chat_room(request, label):
         'room': room,
         'messages': messages
         })
+
+def home(request):
+    return render(request, 'chat/home.html')
